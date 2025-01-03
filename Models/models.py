@@ -24,7 +24,7 @@ class shop(Base):
     id = Column("id", Integer, primary_key= True, unique= True)
     SellerId = mapped_column(ForeignKey("seller.id"))
     Name = Column("name", String)
-    Adress = Column("address", String)
+    Address = Column("address", String)
 
 
 

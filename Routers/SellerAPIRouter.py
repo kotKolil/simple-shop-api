@@ -53,7 +53,6 @@ async def editSeller(request: Request):
         Seller = db.query(seller).filter(seller.id == requestJson["id"]).first()
         if not Seller:
             return HTTPException(404)
-        Seller.Name = str(requestJson["name"])
         db.commit()
         return HTTPException(200)
     except KeyError:
