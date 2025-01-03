@@ -1,14 +1,19 @@
 #importing libraries
-from fastapi import *
-from fastapi.responses import *
-from sqlalchemy import create_engine
-from Models.models import Base
+from Routers.ShopAPIRouter import *
+from Routers.SellerAPIRouter import *
+from Routers.ProductAPIRouter import *
 
 #defining app variable
 app = FastAPI()
 
+#connecting routers to main app
+app.include_router(ShopAPIRouter)
+app.include_router(SellerAPIRouter)
+app.include_router(ProductAPIController)
+
 #index page endpoint
 @app.get("/")
-def index(request: Request):
+def root():
     return HTMLResponse("It works!")
+
 

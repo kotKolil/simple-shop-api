@@ -7,12 +7,14 @@ from fastapi.responses import *
 from Models.models import *
 from random import *
 
-ProductAPIController = APIRouter(prefix="product")
+ProductAPIController = APIRouter(prefix="/product")
 
-@ProductAPIController.get(status_code = status.HTTP_200_OK )
-def getSeller(request: Request):
-    ProductId = request.query_params.get('id', "").first()
-    ProductData = db.filter(product.id == ProductId)
+@ProductAPIController.get(path =  "/", status_code = status.HTTP_200_OK )
+async def getSeller(request: Request):
+    ProductId = request.query_params.get('id', "")
+    ProductData = db.query(product).filter(product.id == ProductId).first()
+    if not ProductData:
+        return HTTPException(404)
     return JSONResponse(
         {
             "id": ProductData.id,
@@ -22,9 +24,9 @@ def getSeller(request: Request):
         }
     )
 
-@ProductAPIController.post(status_code = status.HTTP_201_CREATED)
-def createSeller(request:Request):
-    requestJson = request.json()
+@ProductAPIController.post(path =  "/", status_code = status.HTTP_201_CREATED)
+async def createSeller(request:Request):
+    requestJson = await request.json()
 
     newProduct = shop()
     newProduct.id = randint(10**5, 10**6)
@@ -36,28 +38,30 @@ def createSeller(request:Request):
                                       and isinstance(requestJson["price"], str) else None
     db.add(newProduct)
     db.commit()
+    return HTTPException(200)
 
-
-@ProductAPIController.patch(status_code = status.HTTP_200_OK)
-def editProduct(request:Request):
-    requestJson = request.json()
-
-    newProduct = shop()
-    newProduct.Name = requestJson["Name"] if 'Name' in requestJson and requestJson["Name"] \
-                                          and isinstance(requestJson["Name"], str) else newProduct.Name
-    newProduct.shopId = requestJson["shopId"] if 'shopId' in requestJson and requestJson["shopId"] \
-                                          and isinstance(requestJson["shopId"], str) else newProduct.shopId
-    newProduct.price = requestJson["price"] if 'price' in requestJson and requestJson["price"] \
-                                      and isinstance(requestJson["price"], str) else newProduct.price
-    db.add(newProduct)
+@ProductAPIController.patch(path =  "/", status_code = status.HTTP_200_OK)
+async def editProduct(request:Request):
+    requestJson = await request.json()
+    oldProduct = db.query(product).filter(product.id == requestJson["id"]).first()
+    if not oldProduct:
+        return HTTPException(404)
+    oldProduct.Name = requestJson["Name"] if 'Name' in requestJson and requestJson["Name"] \
+                                          and isinstance(requestJson["Name"], str) else oldProduct.Name
+    oldProduct.shopId = requestJson["shopId"] if 'shopId' in requestJson and requestJson["shopId"] \
+                                          and isinstance(requestJson["shopId"], str) else oldProduct.shopId
+    oldProduct.price = requestJson["price"] if 'price' in requestJson and requestJson["price"] \
+                                      and isinstance(requestJson["price"], str) else oldProduct.price
+    db.query(product).add(oldProduct)
     db.commit()
+    return HTTPException(200)
 
-@ProductAPIController.delete(status_code = status.HTTP_200_OK)
-def deleteProduct(request:Request):
-    requestJson = request.json()
-    if requestJson["id"]:
-        Product = product.filter(id == requestJson["id"]).first()
-        db.delete(Product)
-        db.commit()
-    else:
-        return JSONResponse(["400"], status_code=status.HTTP_400_BAD_REQUEST)
+@ProductAPIController.delete(path =  "/", status_code = status.HTTP_200_OK)
+async def deleteProduct(request: Request):
+    requestJson = await request.json()
+    Product = db.query(product).filter(id == requestJson["id"]).first()
+    if not Product:
+        return HTTPException(404)
+    db.delete(Product)
+    db.commit()
+    return HTTPException(200)

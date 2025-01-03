@@ -7,48 +7,64 @@ from fastapi.responses import *
 from Models.models import *
 from random import *
 
-SellerAPIRouter = APIRouter(prefix="seller")
+SellerAPIRouter = APIRouter(prefix="/seller")
 
-@SellerAPIRouter.get(status_code = status.HTTP_200_OK )
-def getSeller(request: Request):
-    SellerId = request.query_params.get('id', "").first()
-    SellerData = db.filter(seller.id == SellerId)
+
+@SellerAPIRouter.get(path="/", status_code=status.HTTP_200_OK)
+async def getSeller(request: Request):
+    SellerId = request.query_params.get('id', "")
+    SellerDataViaId = db.query(seller).filter(seller.id == SellerId).first()
+    if not SellerDataViaId:
+        return HTTPException(404)
     return JSONResponse(
         {
-            "id": SellerData.id,
-            "Name": SellerData.Name,
+            "id": SellerDataViaId.id,
+            "Name": SellerDataViaId.Name,
         }
     )
 
-@SellerAPIRouter.post(status_code = status.HTTP_201_CREATED)
-def createSeller(request:Request):
-    requestJson = request.json()
+@SellerAPIRouter.get(path = "/all", status_code=status.HTTP_200_OK)
+async def AllSellers(request:Request):
+    return db.query(seller).all()
 
-    newSeller = shop()
-    newSeller.id = randint(10**5, 10**6)
-    newSeller.Name = requestJson["Name"] if 'Name' in requestJson and requestJson["Name"] \
-                                          and isinstance(requestJson["Name"], str) else None
-    db.add(newSeller)
-    db.commit()
-
-
-@SellerAPIRouter.patch(status_code = status.HTTP_200_OK)
-def editSeller(request:Request):
-    requestJson = request.json()
-    if requestJson["id"]:
-        Seller= seller.filter(id == requestJson["id"]).first()
-    else:
-        return JSONResponse(["400"], status_code=status.HTTP_400_BAD_REQUEST)
-    Seller.Name = requestJson["Name"] if 'Name' in requestJson and requestJson["Name"] \
-                                       and isinstance(requestJson["Name"], str) else Seller.Name
-    db.commit()
-
-@SellerAPIRouter.delete(status_code = status.HTTP_200_OK)
-def deleteSeller(request:Request):
-    requestJson = request.json()
-    if requestJson["id"]:
-        Seller = seller.filter(id == requestJson["id"]).first()
-        db.delete(Seller)
+@SellerAPIRouter.post(path="/", status_code=status.HTTP_201_CREATED)
+async def createSeller(request: Request):
+    try:
+        requestJson = await request.json()
+        SellerDataViaName = db.query(seller).filter(seller.Name == requestJson["name"]).first()
+        if SellerDataViaName:
+            return HTTPException(400)
+        newSeller = seller()
+        newSeller.id = randint(10 ** 5, 10 ** 6)
+        newSeller.Name = str(requestJson["name"])
+        db.add(newSeller)
         db.commit()
-    else:
-        return JSONResponse(["400"], status_code=status.HTTP_400_BAD_REQUEST)
+
+        return HTTPException(200)
+
+    except KeyError:
+        return HTTPException(400)
+
+
+@SellerAPIRouter.patch(path="/", status_code=status.HTTP_200_OK)
+async def editSeller(request: Request):
+    try:
+        requestJson = await request.json()
+        Seller = db.query(seller).filter(seller.id == requestJson["id"]).first()
+        if not Seller:
+            return HTTPException(404)
+        Seller.Name = str(requestJson["name"])
+        db.commit()
+        return HTTPException(200)
+    except KeyError:
+        return HTTPException(400)
+
+@SellerAPIRouter.delete(path="/", status_code=status.HTTP_200_OK)
+async def deleteSeller(request: Request):
+    requestJson = await request.json()
+    Seller = db.query(seller).filter(seller.id == requestJson["id"]).first()
+    if not Seller:
+        return HTTPException(404)
+    db.delete(Seller)
+    db.commit()
+    return HTTPException(200)
