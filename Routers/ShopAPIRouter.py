@@ -17,6 +17,10 @@ async def getShop(request: Request):
         return HTTPException(404)
     return shopData
 
+@ShopAPIRouter.get(path =  "/all", status_code = status.HTTP_200_OK )
+async def allShop(request:Request):
+    return db.query(shop).all()
+
 @ShopAPIRouter.post(path =  "/", status_code = status.HTTP_201_CREATED)
 async def createShop(request: Request):
     try:

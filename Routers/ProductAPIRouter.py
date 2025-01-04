@@ -20,46 +20,54 @@ async def getSeller(request: Request):
             "id": ProductData.id,
             "shopId": ProductData.shopId,
             "price": ProductData.price,
-            "Name": ProductData.Name,
+            "Name": ProductData.name,
         }
     )
 
+@ProductAPIController.get(path =  "/all", status_code = status.HTTP_200_OK )
+async def allShop(request:Request):
+    return db.query(product).all()
+
+
 @ProductAPIController.post(path =  "/", status_code = status.HTTP_201_CREATED)
 async def createSeller(request:Request):
-    requestJson = await request.json()
 
-    newProduct = shop()
-    newProduct.id = randint(10**5, 10**6)
-    newProduct.Name = requestJson["Name"] if 'Name' in requestJson and requestJson["Name"] \
-                                          and isinstance(requestJson["Name"], str) else None
-    newProduct.shopId = requestJson["shopId"] if 'shopId' in requestJson and requestJson["shopId"] \
-                                          and isinstance(requestJson["shopId"], str) else None
-    newProduct.price = requestJson["price"] if 'price' in requestJson and requestJson["price"] \
-                                      and isinstance(requestJson["price"], str) else None
-    db.add(newProduct)
-    db.commit()
-    return HTTPException(200)
+    try:
+
+        requestJson = await request.json()
+
+        newProduct = product()
+        newProduct.id = randint(10**5, 10**6)
+        newProduct.name = requestJson["name"]
+        newProduct.shopId = requestJson["ShopId"]
+        newProduct.price = requestJson["price"]
+        db.add(newProduct)
+        db.commit()
+        return HTTPException(200)
+
+    except KeyError:
+        return HTTPException(400)
 
 @ProductAPIController.patch(path =  "/", status_code = status.HTTP_200_OK)
 async def editProduct(request:Request):
-    requestJson = await request.json()
-    oldProduct = db.query(product).filter(product.id == requestJson["id"]).first()
-    if not oldProduct:
-        return HTTPException(404)
-    oldProduct.Name = requestJson["Name"] if 'Name' in requestJson and requestJson["Name"] \
-                                          and isinstance(requestJson["Name"], str) else oldProduct.Name
-    oldProduct.shopId = requestJson["shopId"] if 'shopId' in requestJson and requestJson["shopId"] \
-                                          and isinstance(requestJson["shopId"], str) else oldProduct.shopId
-    oldProduct.price = requestJson["price"] if 'price' in requestJson and requestJson["price"] \
-                                      and isinstance(requestJson["price"], str) else oldProduct.price
-    db.query(product).add(oldProduct)
-    db.commit()
-    return HTTPException(200)
+    try:
+        requestJson = await request.json()
+        oldProduct = db.query(product).filter(product.id == requestJson["id"]).first()
+        if not oldProduct:
+            return HTTPException(404)
+        oldProduct.name = requestJson["name"]
+        oldProduct.shopId = requestJson["ShopId"]
+        oldProduct.price = requestJson["price"]
+        db.add(oldProduct)
+        db.commit()
+        return HTTPException(200)
+    except KeyError:
+        return HTTPException(400)
 
 @ProductAPIController.delete(path =  "/", status_code = status.HTTP_200_OK)
 async def deleteProduct(request: Request):
     requestJson = await request.json()
-    Product = db.query(product).filter(id == requestJson["id"]).first()
+    Product = db.query(product).filter(product.id == requestJson["id"]).first()
     if not Product:
         return HTTPException(404)
     db.delete(Product)
