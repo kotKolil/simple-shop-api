@@ -73,3 +73,4 @@ async def deleteProduct(request: Request):
     db.delete(Product)
     db.commit()
     return HTTPException(200)
+

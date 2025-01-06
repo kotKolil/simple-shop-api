@@ -53,6 +53,7 @@ async def editSeller(request: Request):
         Seller = db.query(seller).filter(seller.id == requestJson["id"]).first()
         if not Seller:
             return HTTPException(404)
+        Seller.Name = requestJson["name"]
         db.commit()
         return HTTPException(200)
     except KeyError:
@@ -60,8 +61,8 @@ async def editSeller(request: Request):
 
 @SellerAPIRouter.delete(path="/", status_code=status.HTTP_200_OK)
 async def deleteSeller(request: Request):
-    requestJson = await request.json()
-    Seller = db.query(seller).filter(seller.id == requestJson["id"]).first()
+    SellerId = request.query_params.get('id', "")
+    Seller = db.query(seller).filter(seller.id == SellerId).first()
     if not Seller:
         return HTTPException(404)
     db.delete(Seller)
