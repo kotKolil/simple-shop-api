@@ -7,13 +7,13 @@ from fastapi.responses import *
 from Models.models import *
 from random import *
 
-SellerAPIRouter = APIRouter(prefix="/seller")
+SellerAPIRouter = APIRouter(prefix="/Seller")
 
 
 @SellerAPIRouter.get(path="/", status_code=status.HTTP_200_OK)
 async def getSeller(request: Request):
     SellerId = request.query_params.get('id', "")
-    SellerDataViaId = db.query(seller).filter(seller.id == SellerId).first()
+    SellerDataViaId = db.query(Seller).filter(Seller.id == SellerId).first()
     if not SellerDataViaId:
         return HTTPException(404)
     return JSONResponse(
@@ -23,18 +23,20 @@ async def getSeller(request: Request):
         }
     )
 
-@SellerAPIRouter.get(path = "/all", status_code=status.HTTP_200_OK)
-async def AllSellers(request:Request):
-    return db.query(seller).all()
+
+@SellerAPIRouter.get(path="/all", status_code=status.HTTP_200_OK)
+async def AllSellers():
+    return db.query(Seller).all()
+
 
 @SellerAPIRouter.post(path="/", status_code=status.HTTP_201_CREATED)
 async def createSeller(request: Request):
     try:
         requestJson = await request.json()
-        SellerDataViaName = db.query(seller).filter(seller.Name == requestJson["name"]).first()
+        SellerDataViaName = db.query(Seller).filter(Seller.Name == requestJson["name"]).first()
         if SellerDataViaName:
             return HTTPException(400)
-        newSeller = seller()
+        newSeller = Seller()
         newSeller.id = randint(10 ** 5, 10 ** 6)
         newSeller.Name = str(requestJson["name"])
         db.add(newSeller)
@@ -50,7 +52,7 @@ async def createSeller(request: Request):
 async def editSeller(request: Request):
     try:
         requestJson = await request.json()
-        Seller = db.query(seller).filter(seller.id == requestJson["id"]).first()
+        Seller = db.query(Seller).filter(Seller.id == requestJson["id"]).first()
         if not Seller:
             return HTTPException(404)
         Seller.Name = requestJson["name"]
@@ -59,10 +61,11 @@ async def editSeller(request: Request):
     except KeyError:
         return HTTPException(400)
 
+
 @SellerAPIRouter.delete(path="/", status_code=status.HTTP_200_OK)
 async def deleteSeller(request: Request):
     SellerId = request.query_params.get('id', "")
-    Seller = db.query(seller).filter(seller.id == SellerId).first()
+    Seller = db.query(Seller).filter(Seller.id == SellerId).first()
     if not Seller:
         return HTTPException(404)
     db.delete(Seller)

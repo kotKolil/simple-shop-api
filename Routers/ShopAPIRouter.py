@@ -7,26 +7,29 @@ from fastapi.responses import *
 from Models.models import *
 from random import *
 
-ShopAPIRouter = APIRouter(prefix="/shop")
+ShopAPIRouter = APIRouter(prefix="/Shop")
 
-@ShopAPIRouter.get(path =  "/", status_code = status.HTTP_200_OK )
+
+@ShopAPIRouter.get(path="/", status_code=status.HTTP_200_OK)
 async def getShop(request: Request):
     ShopId = request.query_params.get('id', "")
-    shopData = db.query(shop).filter(shop.id == ShopId).first()
+    shopData = db.query(Shop).filter(Shop.id == ShopId).first()
     if not shopData:
         return HTTPException(404)
     return shopData
 
-@ShopAPIRouter.get(path =  "/all", status_code = status.HTTP_200_OK )
-async def allShop(request:Request):
-    return db.query(shop).all()
 
-@ShopAPIRouter.post(path =  "/", status_code = status.HTTP_201_CREATED)
+@ShopAPIRouter.get(path="/all", status_code=status.HTTP_200_OK)
+async def allShop():
+    return db.query(Shop).all()
+
+
+@ShopAPIRouter.post(path="/", status_code=status.HTTP_201_CREATED)
 async def createShop(request: Request):
     try:
         request_json = await request.json()
 
-        new_shop = shop()
+        new_shop = Shop()
         new_shop.id = randint(10 ** 5, 10 ** 6)
         new_shop.SellerId = request_json["SellerId"]
         new_shop.name = request_json["name"]
@@ -41,11 +44,11 @@ async def createShop(request: Request):
         return HTTPException(400)
 
 
-@ShopAPIRouter.patch(path =  "/", status_code = status.HTTP_200_OK)
-async def PATCHShop(request:Request):
+@ShopAPIRouter.patch(path="/", status_code=status.HTTP_200_OK)
+async def PATCHShop(request: Request):
     try:
         requestJson = await request.json()
-        Shop = db.query(shop).filter(shop.id == requestJson["id"]).first()
+        Shop = db.query(Shop).filter(Shop.id == requestJson["id"]).first()
         if not Shop:
             return HTTPException(404)
         Shop.SellerId = requestJson["SellerId"]
@@ -57,10 +60,11 @@ async def PATCHShop(request:Request):
     except KeyError:
         return HTTPException(400)
 
-@ShopAPIRouter.delete(path =  "/", status_code = status.HTTP_200_OK)
-async def deleteShop(request:Request):
+
+@ShopAPIRouter.delete(path="/", status_code=status.HTTP_200_OK)
+async def deleteShop(request: Request):
     ShopId = request.query_params.get('id', "")
-    Shop = db.query(shop).filter(shop.id == ShopId).first()
+    Shop = db.query(Shop).filter(Shop.id == ShopId).first()
     if not Shop:
         return HTTPException(404)
     db.delete(Shop)

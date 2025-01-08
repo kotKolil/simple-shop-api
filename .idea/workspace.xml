@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53717d3b-b799-4340-854f-229714fb9250" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Routers/ProductAPIRouter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routers/ProductAPIRouter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Routers/SellerAPIRouter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routers/SellerAPIRouter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Routers/ShopAPIRouter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routers/ShopAPIRouter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/license.txt" beforeDir="false" afterPath="$PROJECT_DIR$/license.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_ProductAPIRouter.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_ProductAPIRouter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_SellerAPIRouter.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_SellerAPIRouter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_ShopAPIRouter.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_ShopAPIRouter.py" afterDir="false" />
@@ -28,6 +31,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0

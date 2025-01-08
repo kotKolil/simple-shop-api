@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("..")
 
 from main import *
@@ -9,12 +10,12 @@ global sample_product_data, sample_shop_data, sample_seller_data
 client = TestClient(app)
 
 sample_product_data = {
-    "name": "sample product",
+    "name": "sample Product",
     "price": 777
 }
 
 sample_seller_data = {
-    "name": "sample seller"
+    "name": "sample Seller"
 }
 sample_shop_data = {
     "name": "Sample Shop",
@@ -22,58 +23,60 @@ sample_shop_data = {
 }
 
 
-
 def test_CreateMethodTest():
     global sample_product_data, sample_shop_data, sample_seller_data
 
-    #creating sample seller
+    # creating sample Seller
     response = client.post(
-        url='/seller/',
-        json = sample_seller_data
+        url='/Seller/',
+        json=sample_seller_data
     )
     sample_seller_data = response.json()
     print(sample_seller_data)
     sample_shop_data["SellerId"] = sample_seller_data["id"]
-    #creating sample shop
+    # creating sample Shop
     response = client.post(
-        url= "/shop/",
-        json = sample_shop_data
+        url="/Shop/",
+        json=sample_shop_data
     )
-    #creating sample product
+    # creating sample Product
     sample_shop_data = response.json()
     sample_product_data["ShopId"] = sample_shop_data["id"]
     response = client.post(
-        url= "/product",
-        json = sample_product_data
+        url="/Product",
+        json=sample_product_data
     )
     sample_product_data = response.json()
 
     assert response.status_code == 200
 
+
 def test_AllMethodTest():
     global sample_product_data
-    response = client.get("/product/all")
+    response = client.get("/Product/all")
     assert response.status_code == 200
 
 
 def test_GETMethodTest():
     print(sample_product_data)
-    response = client.get(f"/product?id={sample_product_data['id']}")
+    response = client.get(f"/Product?id={sample_product_data['id']}")
     assert response.status_code == 200
-    assert response.json()== sample_product_data
+    assert response.json() == sample_product_data
+
 
 def test_PATCHMethodTest():
-    sample_product_data["name"] = "another sample product"
+    sample_product_data["name"] = "another sample Product"
     sample_product_data["price"] = 666
     response = client.patch(
-        "/product",
-        json = sample_product_data
+        "/Product",
+        json=sample_product_data
     )
     assert response.status_code == 200
 
+
 def test_DELETEMethod():
     print(sample_product_data)
-    response = client.delete(f"/shop?id={sample_product_data['id']}")
-    client.delete(f"/seller?id={sample_shop_data['id']}")
-    client.delete(f"/seller?id={sample_seller_data['id']}")
+    response = client.delete(f"/Shop?id={sample_product_data['id']}")
+    client.delete(f"/Seller?id={sample_shop_data['id']}")
+    client.delete(f"/Seller?id={sample_seller_data['id']}")
     assert response.status_code == 200

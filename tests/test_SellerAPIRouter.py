@@ -10,7 +10,7 @@ client = TestClient(app)
 global sample_seller_data
 
 sample_seller_data = {
-    "Name": "sample seller"
+    "Name": "sample Seller"
 }
 
 
@@ -21,9 +21,9 @@ def test_root():
 
 def test_CreateMethodSellerAPIRouter():
     global sample_seller_data
-    # creating test seller
+    # creating test Seller
     response = client.post(
-        "/seller/",
+        "/Seller/",
         json={
             "name": sample_seller_data["Name"]
         },
@@ -32,18 +32,18 @@ def test_CreateMethodSellerAPIRouter():
     assert response.status_code == 200
 
 
-
 def test_AllMethodSellerAPIRouter():
     # getting all sellers from DB
     response = client.get(
-        "/seller/all",
+        "/Seller/all",
     )
     assert response.status_code == 200
+
 
 def test_GetMethodSellerAPIRouter():
     print(sample_seller_data)
     # testing data acess via id
-    response = client.get(f"/seller/?id={sample_seller_data["id"]}")
+    response = client.get(f"/Seller/?id={sample_seller_data["id"]}")
     assert response.json()["Name"] == sample_seller_data["Name"]
     assert response.json()["id"] == sample_seller_data["id"]
 
@@ -52,20 +52,20 @@ def test_PatchMethodSellerAPIRouter():
     print(sample_seller_data)
     # testing editing data in DB via api
     response = client.patch(
-        "/seller",
+        "/Seller",
         json={
             "id": sample_seller_data['id'],
-            "name": "sample seller 2"
+            "name": "sample Seller 2"
         }
     )
     assert response.status_code == 200
-    sample_seller_data["Name"] = "sample seller 2"
+    sample_seller_data["Name"] = "sample Seller 2"
 
 
 def test_DeleteMethodAPIRouter():
     print(sample_seller_data)
     # testing delete method
     response = client.delete(
-        "/seller?id=" + str(sample_seller_data["id"])
+        "/Seller?id=" + str(sample_seller_data["id"])
     )
     assert response.status_code == 200
