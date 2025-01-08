@@ -29,28 +29,28 @@ async def createShop(request: Request):
         new_shop = shop()
         new_shop.id = randint(10 ** 5, 10 ** 6)
         new_shop.SellerId = request_json["SellerId"]
-        new_shop.Name = request_json["name"]
-        new_shop.Address = request_json["address"]
+        new_shop.name = request_json["name"]
+        new_shop.address = request_json["address"]
 
         db.add(new_shop)
         db.commit()
 
-        return HTTPException(200)
+        return JSONResponse(new_shop.as_dict())
 
     except KeyError:
         return HTTPException(400)
 
 
 @ShopAPIRouter.patch(path =  "/", status_code = status.HTTP_200_OK)
-async def editShop(request:Request):
+async def PATCHShop(request:Request):
     try:
         requestJson = await request.json()
         Shop = db.query(shop).filter(shop.id == requestJson["id"]).first()
         if not Shop:
             return HTTPException(404)
         Shop.SellerId = requestJson["SellerId"]
-        Shop.Name = requestJson["name"]
-        Shop.Address = requestJson["address"]
+        Shop.name = requestJson["name"]
+        Shop.address = requestJson["address"]
         db.commit()
 
         return HTTPException(200)
@@ -59,8 +59,8 @@ async def editShop(request:Request):
 
 @ShopAPIRouter.delete(path =  "/", status_code = status.HTTP_200_OK)
 async def deleteShop(request:Request):
-    requestJson = await request.json()
-    Shop = shop.filter(id == requestJson["id"]).first()
+    ShopId = request.query_params.get('id', "")
+    Shop = db.query(shop).filter(shop.id == ShopId).first()
     if not Shop:
         return HTTPException(404)
     db.delete(Shop)

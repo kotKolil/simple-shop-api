@@ -2,7 +2,8 @@ from sqlalchemy.orm import *
 from sqlalchemy import *
 
 class Base(DeclarativeBase):
-    pass
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class product(Base):
     __tablename__ = "product"
@@ -23,8 +24,8 @@ class shop(Base):
 
     id = Column("id", Integer, primary_key= True, unique= True)
     SellerId = mapped_column(ForeignKey("seller.id"))
-    Name = Column("name", String)
-    Address = Column("address", String)
+    name = Column("name", String)
+    address = Column("address", String)
 
 
 

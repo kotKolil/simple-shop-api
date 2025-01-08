@@ -40,7 +40,7 @@ async def createSeller(request: Request):
         db.add(newSeller)
         db.commit()
 
-        return HTTPException(200)
+        return JSONResponse(newSeller.as_dict())
 
     except KeyError:
         return HTTPException(400)

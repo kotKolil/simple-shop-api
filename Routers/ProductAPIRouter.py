@@ -20,7 +20,7 @@ async def getSeller(request: Request):
             "id": ProductData.id,
             "shopId": ProductData.shopId,
             "price": ProductData.price,
-            "Name": ProductData.name,
+            "name": ProductData.name,
         }
     )
 
@@ -43,7 +43,7 @@ async def createSeller(request:Request):
         newProduct.price = requestJson["price"]
         db.add(newProduct)
         db.commit()
-        return HTTPException(200)
+        return JSONResponse(newProduct.as_dict())
 
     except KeyError:
         return HTTPException(400)
@@ -66,8 +66,8 @@ async def editProduct(request:Request):
 
 @ProductAPIController.delete(path =  "/", status_code = status.HTTP_200_OK)
 async def deleteProduct(request: Request):
-    requestJson = await request.json()
-    Product = db.query(product).filter(product.id == requestJson["id"]).first()
+    requestJson = request.query_params.get('id', "")
+    Product = db.query(product).filter(product.id == requestJson).first()
     if not Product:
         return HTTPException(404)
     db.delete(Product)
