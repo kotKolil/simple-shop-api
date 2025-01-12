@@ -4,8 +4,10 @@ sys.path.append("..")
 
 from fastapi import *
 from fastapi.responses import *
-from Models.models import *
 from random import *
+
+from Models.models import *
+from Models.product import *
 
 ProductAPIController = APIRouter(prefix="/Product")
 
