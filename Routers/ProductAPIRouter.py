@@ -14,23 +14,26 @@ ProductAPIController = APIRouter(prefix="/Product")
 
 @ProductAPIController.get(path="/", status_code=status.HTTP_200_OK)
 async def getSeller(request: Request):
-    ProductId = request.query_params.get('id', "")
-    ProductData = db.query(Product).filter(Product.id == ProductId).first()
-    if not ProductData:
-        return HTTPException(404)
-    return JSONResponse(
-        {
-            "id": ProductData.id,
-            "shopId": ProductData.shopId,
-            "price": ProductData.price,
-            "name": ProductData.name,
-        }
-    )
-
-
-@ProductAPIController.get(path="/all", status_code=status.HTTP_200_OK)
-async def allShop(request: Request):
-    return db.query(Product).all()
+    IfAll = request.query_params.get("all", "0")
+    if IfAll == "0":
+        ProductId = request.query_params.get('id', "")
+        ProductData = db.query(Product).filter(Product.id == ProductId).first()
+        if not ProductData:
+            return HTTPException(404)
+        return JSONResponse(
+            {
+                "id": ProductData.id,
+                "shopId": ProductData.shopId,
+                "price": ProductData.price,
+                "name": ProductData.name,
+            }
+        )
+    elif IfAll == "1":
+        ProductId = request.query_params.get('id', "")
+        ProductData = db.query(Product).filter(Product.id == ProductId)
+        if not ProductData:
+            return HTTPException(404)
+        return ProductData
 
 
 @ProductAPIController.post(path="/", status_code=status.HTTP_201_CREATED)

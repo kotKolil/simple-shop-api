@@ -14,21 +14,24 @@ SellerAPIRouter = APIRouter(prefix="/Seller")
 
 @SellerAPIRouter.get(path="/", status_code=status.HTTP_200_OK)
 async def getSeller(request: Request):
-    SellerId = request.query_params.get('id', "")
-    SellerDataViaId = db.query(Seller).filter(Seller.id == SellerId).first()
-    if not SellerDataViaId:
-        return HTTPException(404)
-    return JSONResponse(
-        {
-            "id": SellerDataViaId.id,
-            "Name": SellerDataViaId.Name,
-        }
-    )
-
-
-@SellerAPIRouter.get(path="/all", status_code=status.HTTP_200_OK)
-async def AllSellers():
-    return db.query(Seller).all()
+    IfAll = request.query_params("all", "0")
+    if IfAll == "0":
+        SellerId = request.query_params.get('id', "")
+        SellerDataViaId = db.query(Seller).filter(Seller.id == SellerId).first()
+        if not SellerDataViaId:
+            return HTTPException(404)
+        return JSONResponse(
+            {
+                "id": SellerDataViaId.id,
+                "Name": SellerDataViaId.Name,
+            }
+        )
+    elif IfAll == "1":
+        SellerId = request.query_params.get('id', "")
+        SellerDataViaId = db.query(Seller).filter(Seller.id == SellerId)
+        if not SellerDataViaId:
+            return HTTPException(404)
+        return SellerDataViaId
 
 
 @SellerAPIRouter.post(path="/", status_code=status.HTTP_201_CREATED)

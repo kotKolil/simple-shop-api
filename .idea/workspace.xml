@@ -6,6 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="53717d3b-b799-4340-854f-229714fb9250" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/seller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/seller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/shop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routers/ProductAPIRouter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routers/ProductAPIRouter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routers/SellerAPIRouter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routers/SellerAPIRouter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routers/ShopAPIRouter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routers/ShopAPIRouter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,17 +43,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "Python.main.executor": "Run",
-    "Python.uvicorn main:app.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/Treska/Downloads/dotenv-0.7.jar",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.uvicorn main:app.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Treska/Downloads/dotenv-0.7.jar&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Treska\PycharmProjects\simple-shop-api\Models" />

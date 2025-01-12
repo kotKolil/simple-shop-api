@@ -12,17 +12,19 @@ ShopAPIRouter = APIRouter(prefix="/Shop")
 
 @ShopAPIRouter.get(path="/", status_code=status.HTTP_200_OK)
 async def getShop(request: Request):
-    ShopId = request.query_params.get('id', "")
-    shopData = db.query(Shop).filter(Shop.id == ShopId).first()
-    if not shopData:
-        return HTTPException(404)
-    return shopData
-
-
-@ShopAPIRouter.get(path="/all", status_code=status.HTTP_200_OK)
-async def allShop():
-    return db.query(Shop).all()
-
+    IfAll = request.query_params("IfAll", "0")
+    if IfAll == "0":
+        ShopId = request.query_params.get('id', "")
+        shopData = db.query(Shop).filter(Shop.id == ShopId).first()
+        if not shopData:
+            return HTTPException(404)
+        return shopData
+    elif IfAll == "1":
+        ShopId = request.query_params.get('id', "")
+        shopData = db.query(Shop).filter(Shop.id == ShopId)
+        if not shopData:
+            return HTTPException(404)
+        return shopData
 
 @ShopAPIRouter.post(path="/", status_code=status.HTTP_201_CREATED)
 async def createShop(request: Request):
