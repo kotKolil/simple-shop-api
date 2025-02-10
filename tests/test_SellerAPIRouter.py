@@ -41,7 +41,6 @@ def test_AllMethodSellerAPIRouter():
 
 
 def test_GetMethodSellerAPIRouter():
-    print(sample_seller_data)
     # testing data acess via id
     response = client.get(f"/Seller/?id={sample_seller_data["id"]}")
     assert response.json()["Name"] == sample_seller_data["Name"]
@@ -49,7 +48,6 @@ def test_GetMethodSellerAPIRouter():
 
 
 def test_PatchMethodSellerAPIRouter():
-    print(sample_seller_data)
     # testing editing data in DB via api
     response = client.patch(
         "/Seller",
@@ -63,7 +61,6 @@ def test_PatchMethodSellerAPIRouter():
 
 
 def test_DeleteMethodAPIRouter():
-    print(sample_seller_data)
     # testing delete method
     response = client.delete(
         "/Seller?id=" + str(sample_seller_data["id"])

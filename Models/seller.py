@@ -1,7 +1,7 @@
-from sqlalchemy.orm import *
 from sqlalchemy import *
 
-from .Base import *
+from Base import *
+
 
 class Seller(Base):
     __tablename__ = "Seller"

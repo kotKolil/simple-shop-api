@@ -20,6 +20,7 @@ async def getToken(request: Request) -> Response:
         return JSONResponse(hashed_password)
     return HTTPException(status_code=401, detail="wrong password or username")
 
+
 @UserAPIController.post()
 async def createUser(request: Request) -> Response:
     request_data = request.json()
@@ -27,7 +28,7 @@ async def createUser(request: Request) -> Response:
     hashed_password = get_password_hash(request_data["password"])
     userFromDB = db.query(User).filter(User.id == username and User.password == hashed_password).first()
     if userFromDB:
-        return HTTPException(status_code= 400, detail= "user or password are now using")
+        return HTTPException(status_code=400, detail="user or password are now using")
     newUser = User()
     newUser.id = username
     newUser.password = hashed_password

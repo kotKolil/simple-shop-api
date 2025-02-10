@@ -44,9 +44,7 @@ def test_AllMethodAPI():
 
 
 def test_GETMethodTest():
-    print(sample_shop_data)
     response = client.get(f"/Shop?id={sample_shop_data['id']}")
-    print(response.json())
     assert response.json()['name'] == sample_shop_data["name"]
     assert response.json()["id"] == sample_shop_data["id"]
 

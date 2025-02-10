@@ -1,9 +1,8 @@
 from sqlalchemy.orm import *
 from sqlalchemy import *
-from sqlalchemy.orm import *
-from sqlalchemy import *
 
-from .Base import *
+from Base import *
+
 
 class Product(Base):
     __tablename__ = "Product"

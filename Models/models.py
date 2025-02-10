@@ -1,10 +1,4 @@
-from sqlalchemy.orm import *
-from sqlalchemy import *
-
-from .product import *
-from .seller import *
-from .shop import *
-from .user import *
+from user import *
 
 # path to database
 SQLALCHEMY_DATABASE_URL = "sqlite:///./main.db"

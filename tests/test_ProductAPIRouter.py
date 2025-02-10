@@ -32,7 +32,6 @@ def test_CreateMethodTest():
         json=sample_seller_data
     )
     sample_seller_data = response.json()
-    print(sample_seller_data)
     sample_shop_data["SellerId"] = sample_seller_data["id"]
     # creating sample Shop
     response = client.post(
@@ -58,7 +57,6 @@ def test_AllMethodTest():
 
 
 def test_GETMethodTest():
-    print(sample_product_data)
     response = client.get(f"/Product?id={sample_product_data['id']}")
     assert response.status_code == 200
     assert response.json() == sample_product_data
@@ -75,7 +73,6 @@ def test_PATCHMethodTest():
 
 
 def test_DELETEMethod():
-    print(sample_product_data)
     response = client.delete(f"/Shop?id={sample_product_data['id']}")
     client.delete(f"/Seller?id={sample_shop_data['id']}")
     client.delete(f"/Seller?id={sample_seller_data['id']}")

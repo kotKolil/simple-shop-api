@@ -1,6 +1,5 @@
-from sqlalchemy.orm import *
-from sqlalchemy import *
 from sqlalchemy.orm import DeclarativeBase
+
 
 class Base(DeclarativeBase):
     def as_dict(self):
